@@ -1,0 +1,2360 @@
+MNN Prolog Program Requirements
+
+Requirements for GitHub Copilot Agent
+
+Project name: MNN
+Expanded name: Manual Neuronet
+Primary implementation language: SWI-Prolog
+Primary interface: Interactive SWI-Prolog REPL
+Primary purpose: Transparent symbolic reasoning, algorithm synthesis, dependency optimisation and research hypothesis generation
+
+⸻
+
+1. Project objective
+
+Implement an initial Manual Neuronet system in SWI-Prolog.
+
+The program must represent knowledge as explicit:
+
+* domains;
+* concepts;
+* facts;
+* claims;
+* rules;
+* questions;
+* examples;
+* constraints;
+* dependencies;
+* algorithms;
+* proof obligations;
+* research hypotheses.
+
+The system must use these structures to:
+
+1. answer questions from explicit rules;
+2. generate small candidate algorithms from examples;
+3. identify necessary and unnecessary computations;
+4. convert selected nondeterministic patterns into deterministic structures;
+5. represent alternatives using explicit choice packets;
+6. construct and schedule dependency graphs;
+7. generate complete reasoning and optimisation traces;
+8. distinguish proven conclusions from candidates, conjectures and empirical patterns;
+9. output generated SWI-Prolog code;
+10. execute generated code when requested.
+
+The first version must be transparent and deterministic wherever possible. It must not depend on neural-network libraries, large language models or opaque statistical weights.
+
+⸻
+
+2. Working definition
+
+A Manual Neuronet is:
+
+A transparent symbolic network of typed concepts, explicit correlations, logical conditions, dependencies, constraints and executable actions that derives conclusions or algorithms through inspectable rule activation rather than opaque learned weights.
+
+The program must treat this as an engineering definition rather than a claim that the system reproduces biological neurons.
+
+⸻
+
+3. First-release scope
+
+The first release must implement:
+
+* SWI-Prolog only;
+* an in-SWI-Prolog REPL;
+* file-based domain loading;
+* explicit rule representation;
+* forward reasoning;
+* limited backward reasoning;
+* question hotlists;
+* claim-status classification;
+* positive dependencies;
+* negative constraints;
+* necessary-variable analysis;
+* small decision-tree synthesis;
+* simple recursive-list synthesis;
+* memoisation suggestions;
+* deterministic choice packets;
+* explicit splice operations;
+* static dependency-graph construction;
+* sequential and controlled parallel scheduling;
+* reasoning traces;
+* optimisation traces;
+* generated Prolog output;
+* optional immediate execution;
+* benchmark support;
+* a small number-theory demonstration domain.
+
+The first release must not attempt:
+
+* unrestricted natural-language understanding;
+* unrestricted theorem proving;
+* arbitrary Prolog program optimisation;
+* automatic formal proof completion;
+* general-purpose chatbot behaviour;
+* autonomous scientific publication;
+* distributed computing across machines;
+* GPU execution;
+* quantum execution;
+* unrestricted robot control;
+* semantic equivalence proofs for arbitrary programs.
+
+⸻
+
+4. Primary operating modes
+
+The program must support the following modes.
+
+mode(explain).
+mode(answer).
+mode(synthesise).
+mode(optimise).
+mode(schedule).
+mode(research).
+mode(verify).
+mode(benchmark).
+
+4.1 Explain mode
+
+Explain:
+
+* why a conclusion follows;
+* which rules were used;
+* which facts were required;
+* which alternatives were rejected;
+* which assumptions remain;
+* whether the conclusion is proven, empirical or conjectural.
+
+4.2 Answer mode
+
+Answer a structured question using loaded domain knowledge.
+
+4.3 Synthesise mode
+
+Construct a candidate algorithm from:
+
+* input-output examples;
+* permitted operations;
+* forbidden operations;
+* type constraints;
+* termination limits.
+
+4.4 Optimise mode
+
+Analyse an existing supported Prolog predicate and propose or perform selected transformations.
+
+4.5 Schedule mode
+
+Construct an execution schedule from explicit tasks and dependencies.
+
+4.6 Research mode
+
+Generate:
+
+* candidate correlations;
+* candidate formulas;
+* candidate invariants;
+* perturbations;
+* missing dependencies;
+* proof obligations.
+
+4.7 Verify mode
+
+Test a claim, algorithm or transformation against:
+
+* examples;
+* counterexamples;
+* property checks;
+* reference implementations;
+* bounded mathematical searches.
+
+4.8 Benchmark mode
+
+Compare original and transformed programs.
+
+⸻
+
+5. Required project structure
+
+Create the following initial project structure:
+
+mnn/
+├── README.md
+├── PROGRAM_REQUIREMENTS.md
+├── pack.pl
+├── mnn.pl
+├── src/
+│   ├── mnn_repl.pl
+│   ├── mnn_domain.pl
+│   ├── mnn_knowledge.pl
+│   ├── mnn_rules.pl
+│   ├── mnn_reasoner.pl
+│   ├── mnn_trace.pl
+│   ├── mnn_dependencies.pl
+│   ├── mnn_synthesis.pl
+│   ├── mnn_optimiser.pl
+│   ├── mnn_choice.pl
+│   ├── mnn_scheduler.pl
+│   ├── mnn_research.pl
+│   ├── mnn_verify.pl
+│   ├── mnn_benchmark.pl
+│   ├── mnn_codegen.pl
+│   ├── mnn_storage.pl
+│   └── mnn_diagnostics.pl
+├── domains/
+│   ├── core.pl
+│   ├── list_algorithms.pl
+│   ├── scheduling.pl
+│   └── number_theory.pl
+├── examples/
+│   ├── reasoning_examples.pl
+│   ├── synthesis_examples.pl
+│   ├── detlog_puzzles.pl
+│   ├── piglog_puzzles.pl
+│   └── number_theory_examples.pl
+├── benchmarks/
+│   ├── benchmark_suite.pl
+│   └── expected_results.pl
+├── test/
+│   ├── test_domain.pl
+│   ├── test_rules.pl
+│   ├── test_reasoner.pl
+│   ├── test_trace.pl
+│   ├── test_dependencies.pl
+│   ├── test_synthesis.pl
+│   ├── test_optimiser.pl
+│   ├── test_choice.pl
+│   ├── test_scheduler.pl
+│   ├── test_research.pl
+│   ├── test_verify.pl
+│   ├── test_benchmark.pl
+│   └── test_repl.pl
+└── docs/
+    ├── ARCHITECTURE.md
+    ├── DOMAIN_FORMAT.md
+    ├── RULE_FORMAT.md
+    ├── REPL.md
+    ├── RESEARCH_METHODS.md
+    └── BENCHMARKS.md
+
+Files may be added when necessary, but the architecture must remain modular.
+
+⸻
+
+6. Entry point
+
+The main entry point must be:
+
+:- use_module(mnn).
+?- mnn.
+
+Calling mnn/0 must start the interactive REPL.
+
+The system must also expose programmatic predicates so that it can be used without the REPL.
+
+⸻
+
+7. REPL requirements
+
+The REPL must use simple and discoverable commands.
+
+Required commands:
+
+help.
+domains.
+load_domain(Domain).
+unload_domain(Domain).
+current_domain.
+use_domain(Domain).
+facts.
+rules.
+questions.
+hotlist.
+claims.
+dependencies.
+ask(Question).
+explain(Question).
+why(Conclusion).
+why_not(Conclusion).
+synthesise(Target).
+optimise(PredicateIndicator).
+schedule(Graph).
+research(Target).
+verify(Target).
+benchmark(Target).
+show_trace.
+clear_trace.
+show_code.
+run.
+output.
+output_and_run.
+set(Option, Value).
+get(Option).
+status.
+reset.
+quit.
+
+Alternative natural-looking command wrappers may be added, but these commands must work as Prolog terms.
+
+7.1 Output modes
+
+The REPL must support:
+
+output_mode(run).
+output_mode(code).
+output_mode(code_and_run).
+output_mode(analyse_only).
+
+Default:
+
+output_mode(run).
+
+The user must be able to change it with:
+
+?- set(output_mode, code).
+
+7.2 Trace modes
+
+Support:
+
+trace_mode(off).
+trace_mode(summary).
+trace_mode(full).
+
+Default:
+
+trace_mode(summary).
+
+7.3 Parallel modes
+
+Support:
+
+parallel_mode(off).
+parallel_mode(conservative).
+parallel_mode(automatic).
+parallel_mode(aggressive).
+parallel_mode(speculative).
+
+Default:
+
+parallel_mode(off).
+
+The first release may implement only safe subsets of aggressive and speculative operation, but the modes and diagnostics must exist.
+
+⸻
+
+8. Domain representation
+
+A domain must be represented explicitly.
+
+Required core structure:
+
+mnn_domain(
+    DomainId,
+    Metadata
+).
+
+Example:
+
+mnn_domain(
+    primality,
+    [
+        title("Primality and Fermat Tests"),
+        version(1),
+        status(experimental),
+        parent(number_theory)
+    ]
+).
+
+8.1 Domain contents
+
+A domain file may contain:
+
+mnn_concept/3.
+mnn_fact/3.
+mnn_claim/5.
+mnn_rule/6.
+mnn_question/4.
+mnn_hotlist/2.
+mnn_example/4.
+mnn_constraint/4.
+mnn_operation/4.
+mnn_dependency/4.
+
+8.2 Domain inheritance
+
+Support parent domains.
+
+mnn_domain_child(Child, Parent).
+
+Inherited content must be inspectable.
+
+The system must report whether a fact or rule was:
+
+* defined locally;
+* inherited;
+* imported through a domain bridge.
+
+8.3 Domain bridges
+
+Support:
+
+mnn_domain_bridge(
+    FromDomain,
+    ToDomain,
+    AllowedItems
+).
+
+Example:
+
+mnn_domain_bridge(
+    primality,
+    modular_arithmetic,
+    [
+        predicate(gcd/3),
+        predicate(pow_mod/4),
+        concept(congruence)
+    ]
+).
+
+The reasoner must not import unrelated rules across domains without an explicit bridge or parent relationship.
+
+⸻
+
+9. Concept representation
+
+Required form:
+
+mnn_concept(
+    ConceptId,
+    Type,
+    Properties
+).
+
+Example:
+
+mnn_concept(
+    fermat_test,
+    mathematical_test,
+    [
+        input(integer),
+        output(test_result),
+        domain(primality)
+    ]
+).
+
+Concept properties may include:
+
+* type;
+* domain;
+* parent concept;
+* aliases;
+* input types;
+* output types;
+* source;
+* status;
+* documentation.
+
+⸻
+
+10. Fact representation
+
+Required form:
+
+mnn_fact(
+    FactId,
+    Proposition,
+    Metadata
+).
+
+Example:
+
+mnn_fact(
+    f_even_12,
+    even(12),
+    [
+        domain(arithmetic),
+        status(proven),
+        source(computation)
+    ]
+).
+
+Facts must have stable identifiers.
+
+Duplicate facts must either:
+
+* merge compatible metadata;
+* remain as separate sourced assertions;
+* generate a conflict diagnostic when incompatible.
+
+⸻
+
+11. Claim representation
+
+Required form:
+
+mnn_claim(
+    ClaimId,
+    Proposition,
+    Status,
+    Scope,
+    Metadata
+).
+
+Supported statuses:
+
+status(proven).
+status(formally_verified).
+status(logically_derived).
+status(computationally_verified(Bounds)).
+status(empirically_supported(Data)).
+status(candidate).
+status(conjecture).
+status(refuted).
+status(unknown).
+
+The program must never silently promote a weaker status to a stronger one.
+
+A conclusion derived exclusively from empirical claims cannot automatically become proven.
+
+⸻
+
+12. Rule representation
+
+Required form:
+
+mnn_rule(
+    RuleId,
+    Conditions,
+    Conclusion,
+    Action,
+    Status,
+    Metadata
+).
+
+Example:
+
+mnn_rule(
+    fermat_failure_composite,
+    [
+        integer(N),
+        greater_than(N, 1),
+        fermat_test(N, Base, failed)
+    ],
+    composite(N),
+    cancel(unnecessary_primality_tests(N)),
+    proven,
+    [
+        domain(primality),
+        source(fermat_little_theorem)
+    ]
+).
+
+12.1 Condition forms
+
+The first release must support conditions including:
+
+positive(Goal).
+negative(Goal).
+known(Variable).
+unknown(Variable).
+equals(A, B).
+not_equals(A, B).
+greater_than(A, B).
+less_than(A, B).
+member_of(Value, Set).
+all(Conditions).
+any(Conditions).
+not(Condition).
+
+Ordinary callable Prolog goals may be supported only when explicitly permitted by the domain.
+
+12.2 Rule actions
+
+Supported action forms:
+
+conclude(Proposition).
+ask(Question).
+run(Goal).
+cancel(Target).
+schedule(Task).
+generate_code(Specification).
+add_constraint(Constraint).
+create_proof_obligation(Goal).
+record_hypothesis(Hypothesis).
+no_action.
+
+Actions with side effects must be separated from pure reasoning.
+
+12.3 Rule priority
+
+Rules may include:
+
+priority(Integer).
+
+Higher values run first.
+
+Priority must affect scheduling only, not logical truth.
+
+12.4 Rule conflicts
+
+When two applicable rules produce incompatible conclusions, the system must:
+
+1. preserve both derivations;
+2. compare statuses and scopes;
+3. check whether their assumptions differ;
+4. report a conflict;
+5. avoid silently selecting one unless a declared conflict-resolution rule applies.
+
+⸻
+
+13. Question representation
+
+Required form:
+
+mnn_question(
+    QuestionId,
+    Query,
+    ExpectedAnswerType,
+    Metadata
+).
+
+Example:
+
+mnn_question(
+    q_is_prime,
+    is_prime(N),
+    truth_value,
+    [domain(primality)]
+).
+
+13.1 Hotlists
+
+Required form:
+
+mnn_hotlist(
+    Domain,
+    QuestionIds
+).
+
+The reasoner should prefer hotlisted questions for:
+
+* interactive suggestions;
+* domain testing;
+* caching;
+* benchmark generation.
+
+⸻
+
+14. Reasoning engine
+
+The reasoner must support:
+
+* forward chaining;
+* limited goal-directed backward chaining;
+* cycle detection;
+* duplicate-conclusion detection;
+* assumption tracking;
+* provenance;
+* failure explanations;
+* bounded search.
+
+14.1 Forward reasoning
+
+Starting from known facts, repeatedly apply eligible rules until:
+
+* the requested conclusion is reached;
+* no more rules apply;
+* a configured step limit is reached;
+* a cycle is detected;
+* a contradiction is reached.
+
+14.2 Backward reasoning
+
+For a target conclusion:
+
+1. find rules capable of producing it;
+2. inspect their conditions;
+3. recursively seek the conditions;
+4. use memoisation to avoid repeated subgoals;
+5. stop at configured depth;
+6. report missing conditions.
+
+14.3 Reasoning limits
+
+Required options:
+
+set(max_reasoning_steps, Integer).
+set(max_reasoning_depth, Integer).
+set(max_generated_hypotheses, Integer).
+set(max_choice_product, Integer).
+
+The system must stop safely when limits are reached and explain which limit was reached.
+
+14.4 Truth handling
+
+The first release must support at least:
+
+truth(true).
+truth(false).
+truth(unknown).
+truth(conflict).
+
+Do not use negation as failure as equivalent to logical falsity in stored MNN knowledge.
+
+⸻
+
+15. Trace system
+
+Every reasoning operation must be traceable.
+
+Required trace event forms:
+
+trace_event(
+    EventId,
+    EventType,
+    Data,
+    ParentEvents,
+    Metadata
+).
+
+Event types include:
+
+question_received.
+fact_used.
+rule_considered.
+rule_applied.
+condition_satisfied.
+condition_failed.
+conclusion_derived.
+branch_rejected.
+constraint_applied.
+task_scheduled.
+task_cancelled.
+code_generated.
+verification_passed.
+verification_failed.
+hypothesis_created.
+
+15.1 Summary trace
+
+A summary trace must show:
+
+* question;
+* principal facts;
+* rules applied;
+* conclusion;
+* status;
+* rejected major alternatives.
+
+15.2 Full trace
+
+A full trace must show every relevant intermediate event.
+
+15.3 Trace export
+
+Support export to:
+
+* Prolog terms;
+* plain text;
+* JSON when feasible;
+* Graphviz DOT for dependency and reasoning graphs.
+
+⸻
+
+16. Dependency engine
+
+Required forms:
+
+mnn_dependency(
+    From,
+    To,
+    Type,
+    Metadata
+).
+
+Supported dependency types:
+
+positive.
+negative_constraint.
+data.
+control.
+ordering.
+resource.
+effect.
+proof.
+optional.
+
+16.1 Positive dependencies
+
+A positive dependency means the target requires the source.
+
+mnn_dependency(
+    modular_test_result,
+    primality_decision,
+    positive,
+    []
+).
+
+16.2 Negative constraints
+
+A negative constraint invalidates or blocks a route.
+
+mnn_dependency(
+    small_factor_found,
+    probable_prime_route,
+    negative_constraint,
+    []
+).
+
+16.3 Necessary-variable analysis
+
+For a supported predicate, determine which variables and subgoals contribute to requested outputs.
+
+Required interface:
+
+necessary_variables(
+    PredicateIndicator,
+    RequestedOutputs,
+    NecessaryVariables,
+    NecessaryGoals,
+    Diagnostics
+).
+
+The analysis may be conservative.
+
+It must not remove a goal unless the system can justify that:
+
+* its outputs are unused;
+* it has no permitted side effects;
+* it cannot affect success or failure;
+* it cannot affect exceptions;
+* it cannot affect answer order where order matters.
+
+16.4 Dependency graph
+
+Required interface:
+
+build_dependency_graph(
+    Target,
+    Graph,
+    Diagnostics
+).
+
+Graph nodes must include:
+
+* identifier;
+* inputs;
+* outputs;
+* status;
+* cost estimate;
+* effect classification.
+
+⸻
+
+17. Algorithm synthesis
+
+The first release must support small synthesis tasks.
+
+Required input forms:
+
+mnn_example(
+    ExampleId,
+    Input,
+    Output,
+    Metadata
+).
+mnn_operation(
+    OperationId,
+    PredicateIndicator,
+    Cost,
+    Metadata
+).
+mnn_constraint(
+    ConstraintId,
+    Constraint,
+    Status,
+    Metadata
+).
+
+17.1 Supported synthesis classes
+
+Initially support:
+
+* finite decision trees;
+* direct lookup;
+* arithmetic expressions from a restricted operation set;
+* structural recursion over lists;
+* list mapping;
+* list filtering;
+* list duplication;
+* list accumulation;
+* simple state transitions.
+
+17.2 Candidate ranking
+
+Rank candidate algorithms by:
+
+1. passes all mandatory examples;
+2. obeys constraints;
+3. terminates on required test set;
+4. uses permitted operations;
+5. minimum unsupported assumptions;
+6. smaller program size;
+7. lower estimated runtime;
+8. lower estimated memory;
+9. greater determinism;
+10. easier traceability.
+
+17.3 Candidate status
+
+Generated algorithms must be labelled:
+
+candidate_algorithm.
+verified_on_examples.
+property_tested.
+equivalence_verified.
+
+Passing supplied examples must not be described as general proof.
+
+17.4 Recursive synthesis
+
+For list recursion, attempt templates such as:
+
+predicate([], BaseOutput).
+predicate([Head|Tail], Output) :-
+    transform_head(Head, Partial),
+    predicate(Tail, TailOutput),
+    combine(Partial, TailOutput, Output).
+
+Search must be bounded.
+
+17.5 Decision-tree synthesis
+
+Generate shared decisions rather than one clause per example when possible.
+
+⸻
+
+18. Optimiser
+
+The optimiser must initially recognise selected patterns rather than arbitrary Prolog.
+
+Required interface:
+
+optimise_predicate(
+    PredicateIndicator,
+    Options,
+    Original,
+    Optimised,
+    Trace,
+    Diagnostics
+).
+
+18.1 Supported transformations
+
+The first release should support:
+
+* unused pure goal detection;
+* common-prefix factoring;
+* common-suffix factoring;
+* repeated deterministic-call memoisation suggestions;
+* repeated traversal detection;
+* selected findall/3 analysis;
+* simple loop fusion suggestions;
+* subterm-index suggestions;
+* deterministic branch conversion;
+* explicit dependency extraction.
+
+18.2 Transformation status
+
+Each transformation must be classified as:
+
+safe_static.
+verified_by_tests.
+candidate_only.
+unsupported.
+
+18.3 No unverified semantic claims
+
+The optimiser must not claim semantic equivalence unless:
+
+* equivalence was formally established for the supported pattern; or
+* bounded or property-based comparison was completed and described accurately.
+
+18.4 Fallback
+
+Unsupported constructs must not crash the whole conversion.
+
+The optimiser should preserve the original code and issue diagnostics.
+
+⸻
+
+19. Loop conversion
+
+Implement a limited Loop2-style conversion layer.
+
+19.1 Findall analysis
+
+Recognise:
+
+findall(Template, Goal, Results)
+
+and classify whether it can be converted into a deterministic loop.
+
+The first release may support only goals based on:
+
+* list traversal;
+* between/3;
+* known finite domain generators;
+* simple deterministic transformations;
+* selected multiple-clause enumerations.
+
+19.2 Generated loops
+
+Generated loops must explicitly represent:
+
+* source;
+* accumulator;
+* transition;
+* termination;
+* final output.
+
+19.3 Multiple-template collection
+
+Where several findall/3 calls traverse the same finite source, propose a fused traversal.
+
+19.4 Collection order
+
+Generated output order must match the original supported source order.
+
+19.5 Failure behaviour
+
+The converter must preserve whether:
+
+* no source values produce [];
+* transformation failure skips an item;
+* exceptions propagate.
+
+⸻
+
+20. Memoisation
+
+Required interface:
+
+memo_call(
+    Namespace,
+    Key,
+    Goal,
+    Result
+).
+
+The implementation must use safe SWI-Prolog storage.
+
+Memoisation options:
+
+memo_mode(off).
+memo_mode(session).
+memo_mode(domain).
+
+Default:
+
+memo_mode(session).
+
+Only deterministic and side-effect-free calls may be automatically memoised.
+
+The cache must support:
+
+clear_memo.
+clear_memo(Namespace).
+memo_statistics(Statistics).
+
+⸻
+
+21. Choice packets
+
+Implement Detlog-style explicit alternatives.
+
+Canonical representation:
+
+cp(Values)
+
+Requirements:
+
+* Values must be a finite proper list;
+* order must be preserved;
+* duplicate handling must be configurable;
+* unbound values must be rejected by default;
+* an empty choice packet must produce a diagnostic;
+* nested choice packets must be supported or explicitly normalised.
+
+21.1 Required predicates
+
+choice_packet(Term).
+normalise_cp(Input, Output).
+cp_values(CP, Values).
+cp_map(Predicate, CPIn, CPOut).
+cp_filter(Predicate, CPIn, CPOut).
+cp_first(CP, Value).
+cp_select(Predicate, CP, Value).
+
+⸻
+
+22. Splicing
+
+Required predicates:
+
+splice(+ChoiceTerms, -Rows).
+splice_collect(+ChoiceTerms, -Rows).
+splice_each(+ChoiceTerms, :Consumer).
+splice_first(+ChoiceTerms, -Row).
+splice_select(+ChoiceTerms, :Predicate, -Row).
+
+Required behaviour:
+
+?- splice(
+       [cp([1,2]), cp([3,4])],
+       Rows
+   ).
+Rows = [
+    [1,3],
+    [1,4],
+    [2,3],
+    [2,4]
+].
+
+Requirements:
+
+* accept mixtures of fixed values and cp/1;
+* preserve left-to-right enumeration;
+* support nested choice packets;
+* estimate product size before materialisation;
+* warn or stop when the configured maximum is exceeded;
+* provide streaming enumeration through splice_each/2;
+* avoid hidden unrestricted choicepoints in collection predicates.
+
+The strict design rule is:
+
+Splice early, constrain before expansion, and enumerate late.
+
+⸻
+
+23. Explicit deterministic control
+
+Provide the following predicates:
+
+if_commit(+Condition, :Then, :Else).
+first(:Generator, -Result).
+once_det(:Goal).
+guard(+Condition).
+decision(+Input, -Branch).
+loop_exit(+Reason).
+
+These predicates must have documented deterministic or semideterministic behaviour.
+
+The first release does not need to convert every Prolog cut automatically.
+
+It should classify cuts encountered during analysis as:
+
+green_cut.
+deterministic_clause_selection.
+first_solution_cut.
+state_transition_cut.
+unsafe_cut.
+unknown_cut.
+
+Unsafe cuts must remain unconverted.
+
+⸻
+
+24. Scheduler
+
+The scheduler must operate on explicit task descriptions.
+
+Required task form:
+
+mnn_task(
+    TaskId,
+    Goal,
+    Inputs,
+    Outputs,
+    Dependencies,
+    Metadata
+).
+
+Metadata may include:
+
+cost_estimate(Number).
+failure_estimate(Number).
+purity(pure).
+purity(effectful).
+priority(Number).
+deadline(Milliseconds).
+resource(cpu).
+
+24.1 Readiness
+
+A task is ready when:
+
+* all mandatory dependencies are satisfied;
+* required inputs are available;
+* no negative constraint has invalidated it;
+* effect ordering permits execution.
+
+24.2 Sequential scheduling
+
+Sequential mode must produce a valid topological order.
+
+24.3 Parallel scheduling
+
+Use SWI-Prolog threads for pure tasks where enabled.
+
+The scheduler must:
+
+* use a bounded worker pool;
+* avoid creating one thread per trivial goal;
+* batch small tasks where useful;
+* collect results safely;
+* propagate exceptions;
+* support cancellation;
+* preserve declared ordering constraints.
+
+24.4 Failure-aware scheduling
+
+Cheap tasks likely to invalidate a branch may be prioritised.
+
+Suggested scheduling score:
+
+priority score =
+    elimination estimate
+    × relevance estimate
+    ÷ cost estimate
+
+This is a heuristic for scheduling only.
+
+24.5 Stacked scheduling
+
+The scheduler should not require a global barrier after every group.
+
+When a task completes:
+
+1. record outputs;
+2. mark dependent tasks ready;
+3. submit newly ready tasks;
+4. cancel invalid tasks;
+5. continue until target completion.
+
+24.6 Speculative scheduling
+
+Speculative mode may run only tasks classified as:
+
+purity(pure).
+reversible(true).
+
+No speculative task may:
+
+* write files;
+* send network requests;
+* alter persistent state;
+* perform robot actions;
+* call assertz/1 or retract/1 outside isolated internal storage;
+* produce irreversible output.
+
+⸻
+
+25. Detlog puzzles
+
+Provide a puzzle format:
+
+detlog_puzzle(
+    PuzzleId,
+    Inputs,
+    AllowedOperations,
+    Target,
+    Metadata
+).
+
+The solver should search for explicit operations producing the target.
+
+Initial allowed operations may include:
+
+* splice;
+* map;
+* filter;
+* flatten;
+* append;
+* select;
+* fixed reordering;
+* deterministic transformation.
+
+The solver must provide:
+
+* candidate solution;
+* operation sequence;
+* verification result;
+* trace;
+* search limits.
+
+⸻
+
+26. Piglog puzzles
+
+Provide a scheduling-puzzle format:
+
+piglog_puzzle(
+    PuzzleId,
+    Tasks,
+    Resources,
+    Target,
+    Metadata
+).
+
+The solver must produce:
+
+* dependency graph;
+* sequential schedule;
+* optional parallel schedule;
+* estimated critical path;
+* cancellation conditions;
+* explanation.
+
+⸻
+
+27. Research engine
+
+The research engine must generate clearly labelled hypotheses.
+
+Required interface:
+
+research(
+    Target,
+    Options,
+    Findings
+).
+
+Supported initial methods:
+
+* explicit correlation search;
+* repeated dependency-pattern detection;
+* candidate formula detection;
+* candidate invariant detection;
+* perturbation generation;
+* missing-condition analysis;
+* counterexample search;
+* cross-algorithm pattern comparison.
+
+⸻
+
+28. Correlation discovery
+
+The program may search for patterns such as:
+
+correlation(
+    Conditions,
+    Conclusion,
+    Support,
+    Status
+).
+
+Initial correlation methods:
+
+* exact implication over supplied examples;
+* exclusion;
+* repeated co-occurrence;
+* repeated ordering;
+* deterministic mapping;
+* necessary-condition candidate;
+* sufficient-condition candidate.
+
+A discovered correlation must initially be:
+
+status(candidate).
+
+It may become:
+
+status(empirically_supported(Data)).
+
+after testing.
+
+It must not become proven without a logical proof.
+
+⸻
+
+29. Formula discovery
+
+Support limited formula search using:
+
+* constant formulas;
+* linear formulas;
+* simple polynomial formulas;
+* finite differences;
+* ratios where defined;
+* recurrence candidates;
+* Gaussian elimination for linear coefficient systems.
+
+Required interface:
+
+discover_formula(
+    Examples,
+    AllowedForms,
+    Formula,
+    Evidence
+).
+
+The output must include:
+
+* matched examples;
+* failed examples;
+* assumptions;
+* candidate status;
+* complexity.
+
+⸻
+
+30. Invariant discovery
+
+Required interface:
+
+discover_invariant(
+    ProcessExamples,
+    CandidateInvariant,
+    Evidence
+).
+
+Initial invariant forms may include:
+
+* constant list length relation;
+* conserved sum;
+* conserved count;
+* monotonic value;
+* unchanged subterm;
+* recursive argument-size decrease;
+* state property preserved by every supplied transition.
+
+Every invariant remains a candidate until verified.
+
+⸻
+
+31. Perturbation engine
+
+Required form:
+
+generate_perturbations(
+    Original,
+    AllowedChanges,
+    Candidates
+).
+
+Allowed changes may include:
+
+* reorder independent pure goals;
+* remove a condition;
+* add a condition;
+* replace an operation;
+* change a constant;
+* change a partition boundary;
+* substitute a candidate formula.
+
+Each perturbation must be classified:
+
+semantics_preserving_candidate.
+behaviour_changing_experiment.
+invalid.
+unknown.
+
+The program must test perturbations where possible and retain counterexamples.
+
+⸻
+
+32. Regressionless sequence matching
+
+The first release may include a small symbolic sequence component.
+
+Required input representation:
+
+sequence_example(
+    Context,
+    Outcome,
+    Metadata
+).
+
+Supported context encodings:
+
+raw_values.
+differences.
+binary_ranks.
+symbolic_trends.
+milestones.
+
+Required matching modes:
+
+exact.
+prefix.
+subsequence.
+nearest_symbolic_context.
+
+Required output:
+
+* matched contexts;
+* candidate outcomes;
+* support counts;
+* ambiguity;
+* status.
+
+This component must not describe its output as a statistically validated forecast unless statistical validation is explicitly performed.
+
+⸻
+
+33. Code generation
+
+Generated code must be valid SWI-Prolog.
+
+Required interface:
+
+generate_prolog(
+    InternalRepresentation,
+    Options,
+    SourceText
+).
+
+Code-generation requirements:
+
+* readable predicate names;
+* stable formatting;
+* no anonymous unexplained helper predicates;
+* comments linking generated predicates to trace identifiers;
+* module declaration when outputting a complete file;
+* declarations for meta-predicates where needed;
+* no unnecessary dynamic predicates;
+* no hidden use of assertz/1 for ordinary generated logic;
+* preserve requested public predicate names where practical.
+
+33.1 Output targets
+
+Support:
+
+target(snippet).
+target(module).
+target(test_file).
+
+33.2 File output
+
+Support explicit file writing only when requested.
+
+output_code(File).
+
+The program must not overwrite an existing file without:
+
+* an explicit overwrite option; or
+* creation of a backup or new filename.
+
+⸻
+
+34. Execution
+
+Generated code may be run in the current SWI-Prolog process when safe.
+
+The system must:
+
+* catch exceptions;
+* report module conflicts;
+* avoid silently replacing existing predicates;
+* isolate temporary generated predicates in a generated module;
+* clean up temporary modules when feasible.
+
+⸻
+
+35. Verification
+
+Required interface:
+
+verify(
+    Target,
+    VerificationMethod,
+    Result,
+    Evidence
+).
+
+Supported methods:
+
+examples.
+bounded_exhaustive.
+property_tests.
+reference_comparison.
+determinism_check.
+termination_sample.
+
+35.1 Reference comparison
+
+For program transformations, compare:
+
+* success or failure;
+* output substitutions;
+* output order where required;
+* exceptions;
+* residual choicepoints;
+* side effects where safely testable.
+
+35.2 Determinism checks
+
+Use SWI-Prolog facilities where appropriate to detect unintended choicepoints.
+
+35.3 Verification labels
+
+Return:
+
+verified.
+verified_within_bounds(Bounds).
+failed(Counterexample).
+inconclusive(Reason).
+unsupported(Method).
+
+⸻
+
+36. Number-theory demonstration domain
+
+Create a small domain demonstrating MNN operation.
+
+It should include:
+
+* divisibility;
+* greatest common divisor;
+* modular exponentiation;
+* Fermat’s Little Theorem;
+* Fermat primality tests;
+* pseudoprimes;
+* Carmichael-number candidates;
+* Fermat quotients;
+* small bounded Wieferich tests.
+
+36.1 Required example rule
+
+mnn_rule(
+    fermat_witness_proves_composite,
+    [
+        integer(N),
+        greater_than(N, 2),
+        coprime(Base, N),
+        modular_power_not_one(Base, N)
+    ],
+    composite(N),
+    cancel(remaining_fermat_tests(N)),
+    proven,
+    [
+        domain(primality),
+        explanation(
+            "A failed Fermat congruence for a coprime base proves compositeness."
+        )
+    ]
+).
+
+36.2 Important distinction
+
+Passing one or more Fermat tests must produce:
+
+passes_fermat_tests(N, Bases)
+
+or:
+
+probable_prime_under_fermat_tests(N, Bases)
+
+It must not automatically produce:
+
+prime(N)
+
+36.3 Demonstration optimisation
+
+Show that modular powers for multiple tests can be:
+
+* memoised;
+* scheduled independently;
+* cancelled once a witness proves compositeness.
+
+⸻
+
+37. Diagnostics
+
+Every unsupported or unsafe operation must produce a structured diagnostic.
+
+Required form:
+
+diagnostic(
+    Severity,
+    Code,
+    Location,
+    Message,
+    Details,
+    SuggestedAction
+).
+
+Severities:
+
+info.
+warning.
+error.
+fatal.
+
+Required diagnostic categories include:
+
+* unsupported construct;
+* possible nontermination;
+* reasoning limit reached;
+* choice product too large;
+* impure speculative task;
+* unknown claim status;
+* contradictory conclusions;
+* unsafe optimisation;
+* failed verification;
+* missing domain bridge;
+* unbound choice-packet value;
+* unresolved dependency;
+* unsupported synthesis problem.
+
+Diagnostics must identify:
+
+* domain;
+* predicate or rule;
+* source file;
+* line when available;
+* suggested replacement or next action.
+
+⸻
+
+38. Persistence
+
+Domain knowledge should primarily be stored in Prolog source files.
+
+Optional session data may include:
+
+* memo tables;
+* benchmark results;
+* generated hypotheses;
+* traces.
+
+The first release should avoid complex databases.
+
+Required operations:
+
+save_hypotheses(File).
+load_hypotheses(File).
+save_trace(File).
+save_benchmark_results(File).
+
+Generated research findings must not automatically modify trusted domain files.
+
+⸻
+
+39. Security and safety
+
+The system must not execute arbitrary stored terms without validation.
+
+Before calling a domain-provided predicate, check it against:
+
+* an allowed predicate list;
+* module restrictions;
+* purity metadata;
+* mode restrictions.
+
+Disallow by default:
+
+* shell/1;
+* process_create/3;
+* unrestricted file deletion;
+* unrestricted network calls;
+* unrestricted consult/1 from unknown paths;
+* unrestricted assertz/1;
+* unrestricted retract/1;
+* halt/0 from generated code.
+
+Provide an explicit trusted-development option only if needed.
+
+⸻
+
+40. Testing requirements
+
+Use plunit.
+
+Every module must have unit tests.
+
+The full suite must run with a command such as:
+
+swipl -q -g run_tests -t halt test/*.pl
+
+or an equivalent documented command.
+
+40.1 Domain tests
+
+Test:
+
+* loading;
+* unloading;
+* inheritance;
+* bridges;
+* duplicate identifiers;
+* malformed declarations.
+
+40.2 Rule tests
+
+Test:
+
+* rule validation;
+* positive conditions;
+* negative conditions;
+* conflicts;
+* actions;
+* status propagation.
+
+40.3 Reasoner tests
+
+Test:
+
+* forward reasoning;
+* backward reasoning;
+* unknown results;
+* contradictions;
+* cycles;
+* limits;
+* provenance.
+
+40.4 Trace tests
+
+Test:
+
+* complete trace creation;
+* summary generation;
+* parent relationships;
+* export.
+
+40.5 Dependency tests
+
+Test:
+
+* positive dependencies;
+* negative constraints;
+* graph creation;
+* topological ordering;
+* cycles;
+* necessary-variable analysis.
+
+40.6 Synthesis tests
+
+Test:
+
+* lookup synthesis;
+* decision trees;
+* simple list recursion;
+* invalid candidates;
+* search limits;
+* generated-code execution.
+
+40.7 Optimiser tests
+
+Test:
+
+* unused pure goals;
+* preservation of effectful goals;
+* common-prefix factoring;
+* memoisation suggestions;
+* unsupported fallback.
+
+40.8 Choice tests
+
+Test:
+
+* valid packets;
+* empty packets;
+* nested packets;
+* fixed values;
+* order;
+* duplicates;
+* unbound values;
+* large products;
+* streaming splice.
+
+40.9 Scheduler tests
+
+Test:
+
+* readiness;
+* sequential ordering;
+* parallel execution;
+* task failure;
+* cancellation;
+* exceptions;
+* impurity restrictions;
+* bounded workers.
+
+40.10 Research tests
+
+Test:
+
+* candidate correlations;
+* counterexamples;
+* formula candidates;
+* invariant candidates;
+* perturbations;
+* status labels.
+
+40.11 Verification tests
+
+Test:
+
+* passing examples;
+* failing examples;
+* bounded exhaustive checks;
+* reference comparisons;
+* inconclusive results.
+
+40.12 REPL tests
+
+Test command parsing and state changes without requiring manual interaction.
+
+⸻
+
+41. Benchmark requirements
+
+Benchmarks must compare:
+
+* original runtime;
+* transformed runtime;
+* CPU time;
+* memory where practical;
+* predicate calls;
+* inferences;
+* residual choicepoints;
+* repeated computations;
+* critical-path estimate;
+* parallel overhead.
+
+41.1 Initial benchmark categories
+
+Include:
+
+1. repeated modular exponentiation;
+2. early compositeness rejection;
+3. fused versus repeated list traversals;
+4. memoised versus repeated deterministic calls;
+5. backtracking enumeration versus explicit splice collection;
+6. sequential versus parallel independent tasks;
+7. small-task parallel overhead;
+8. failure-aware cancellation;
+9. necessary-goal pruning;
+10. algorithm-synthesis search size.
+
+41.2 Benchmark honesty
+
+Benchmark reports must state:
+
+* SWI-Prolog version;
+* operating system;
+* processor;
+* number of workers;
+* input size;
+* warm-up policy;
+* number of runs;
+* median or other aggregation;
+* variance where practical.
+
+Do not claim universal speed improvement.
+
+⸻
+
+42. GitHub Copilot Agent workflow
+
+Copilot Agent must implement the project in stages.
+
+For every stage:
+
+1. inspect existing code;
+2. update the design where required;
+3. implement the stage;
+4. add unit tests;
+5. add integration tests;
+6. run the full test suite;
+7. fix failures without weakening tests;
+8. update documentation;
+9. perform a self-review;
+10. update a progress document.
+
+Create:
+
+docs/IMPLEMENTATION_PROGRESS.md
+
+The progress document must record:
+
+* completed stage;
+* files changed;
+* tests added;
+* known limitations;
+* deferred requirements;
+* benchmark results;
+* next stage.
+
+Copilot Agent must not change semantics merely to make tests pass.
+
+⸻
+
+43. Implementation stages
+
+Stage 1 — Project foundation
+
+Implement:
+
+* module structure;
+* main entry point;
+* configuration;
+* diagnostics;
+* basic REPL;
+* tests.
+
+Acceptance:
+
+?- mnn.
+
+starts the REPL and help. works.
+
+Stage 2 — Domains and knowledge
+
+Implement:
+
+* domain loading;
+* concepts;
+* facts;
+* claims;
+* questions;
+* hotlists;
+* bridges;
+* validation.
+
+Acceptance:
+
+A domain can be loaded, inspected and unloaded without leaving stale state.
+
+Stage 3 — Rules and reasoning
+
+Implement:
+
+* rule validation;
+* forward reasoning;
+* limited backward reasoning;
+* status propagation;
+* conflicts;
+* unknown results.
+
+Acceptance:
+
+The reasoner answers supplied rule-chain examples and produces correct statuses.
+
+Stage 4 — Tracing
+
+Implement:
+
+* trace events;
+* summary traces;
+* full traces;
+* text export;
+* graph export.
+
+Acceptance:
+
+Every derived conclusion identifies its supporting facts and rules.
+
+Stage 5 — Dependencies
+
+Implement:
+
+* dependency representation;
+* graph construction;
+* negative constraints;
+* cycle detection;
+* necessary-variable analysis for supported patterns.
+
+Acceptance:
+
+The system can explain which calculations are necessary for a selected output.
+
+Stage 6 — Choice packets and splicing
+
+Implement:
+
+* cp/1;
+* packet validation;
+* splice predicates;
+* streaming enumeration;
+* product-size estimation.
+
+Acceptance:
+
+All required Cartesian-product and mixed-value tests pass in exact order.
+
+Stage 7 — Algorithm synthesis
+
+Implement:
+
+* example loading;
+* lookup synthesis;
+* decision-tree synthesis;
+* simple recursive list synthesis;
+* candidate ranking;
+* generated code.
+
+Acceptance:
+
+The system synthesises and runs several predefined small algorithms.
+
+Stage 8 — Optimisation
+
+Implement:
+
+* unused pure-goal detection;
+* common-prefix factoring;
+* repeated deterministic-call analysis;
+* selected collection analysis;
+* transformation traces.
+
+Acceptance:
+
+Supported transformations preserve reference outputs on the test corpus.
+
+Stage 9 — Scheduling
+
+Implement:
+
+* task graph;
+* readiness;
+* sequential scheduler;
+* worker pool;
+* automatic scheduling;
+* cancellation;
+* purity restrictions.
+
+Acceptance:
+
+Parallel execution produces the same outputs as sequential execution for pure tasks.
+
+Stage 10 — Research methods
+
+Implement:
+
+* correlation candidates;
+* simple formula discovery;
+* simple invariant discovery;
+* perturbations;
+* counterexample recording.
+
+Acceptance:
+
+Every research output is correctly labelled as candidate, empirical, refuted or verified within bounds.
+
+Stage 11 — Number theory domain
+
+Implement:
+
+* modular arithmetic;
+* Fermat test;
+* pseudoprime examples;
+* Carmichael examples;
+* Fermat quotients;
+* bounded Wieferich tests.
+
+Acceptance:
+
+The system distinguishes compositeness proofs from probable-prime evidence.
+
+Stage 12 — Benchmarks and release review
+
+Implement:
+
+* benchmark suite;
+* reports;
+* documentation;
+* complete regression suite;
+* release checklist.
+
+Acceptance:
+
+All tests pass and benchmark claims are reproducible.
+
+⸻
+
+44. Acceptance criteria
+
+The first release is accepted only when all the following are true:
+
+1. The program loads cleanly in a supported SWI-Prolog version.
+2. mnn/0 starts the REPL.
+3. Domains load and validate.
+4. Facts, claims, rules and questions are inspectable.
+5. The reasoner produces provenance-aware answers.
+6. Unknown and conflicting conclusions are represented explicitly.
+7. Claim status is preserved correctly.
+8. Choice packets and splice predicates satisfy all required tests.
+9. The synthesis engine generates at least:
+    * one decision tree;
+    * one lookup algorithm;
+    * one recursive list algorithm.
+10. The dependency engine constructs valid graphs.
+11. Necessary-variable analysis works for documented supported patterns.
+12. The scheduler runs pure independent tasks sequentially and in parallel.
+13. Speculative execution rejects effectful tasks.
+14. The optimiser reports unsupported constructs safely.
+15. Generated Prolog code is readable and executable.
+16. Research outputs are never presented as proven without verification.
+17. The number-theory domain correctly handles Fermat-test limitations.
+18. The full plunit test suite passes.
+19. Benchmark methodology is documented.
+20. README.md, ARCHITECTURE.md, REPL.md and PROGRAM_REQUIREMENTS.md are complete.
+
+⸻
+
+45. Required example session
+
+The completed program should support a session similar to:
+
+?- use_module(mnn).
+true.
+?- mnn.
+MNN Manual Neuronet
+Type help. for commands.
+mnn> load_domain(number_theory).
+Loaded domain number_theory.
+mnn> ask(is_composite(341)).
+Result: true
+Status: logically_derived
+Reason:
+341 fails or is classified through the loaded composite-number rules.
+mnn> explain(is_composite(341)).
+Question:
+    is_composite(341)
+Facts and calculations:
+    341 = 11 * 31
+Rule:
+    A positive integer greater than one with a non-trivial factor
+    is composite.
+Conclusion:
+    composite(341)
+Status:
+    proven
+mnn> research(fermat_test(341)).
+Finding:
+    341 may pass selected Fermat tests despite being composite.
+Classification:
+    pseudoprime behaviour
+Status:
+    computationally_verified([bases([2])])
+mnn> set(output_mode, code_and_run).
+Updated output mode.
+mnn> synthesise(double_list).
+Generated candidate:
+double_list([], []).
+double_list([A|As], [A,A|Bs]) :-
+    double_list(As, Bs).
+Verification:
+    passed all supplied examples
+Status:
+    verified_on_examples
+mnn> quit.
+
+Exact wording may differ, but equivalent behaviour is required.
+
+⸻
+
+46. Documentation requirements
+
+README.md
+
+Include:
+
+* project summary;
+* installation;
+* starting the REPL;
+* minimal example;
+* limitations;
+* test command;
+* benchmark command.
+
+ARCHITECTURE.md
+
+Explain:
+
+* modules;
+* data flow;
+* reasoning engine;
+* trace graph;
+* synthesis;
+* optimisation;
+* scheduling.
+
+DOMAIN_FORMAT.md
+
+Document every supported domain declaration.
+
+RULE_FORMAT.md
+
+Document:
+
+* conditions;
+* conclusions;
+* actions;
+* statuses;
+* metadata;
+* conflicts.
+
+REPL.md
+
+Document every command and option.
+
+RESEARCH_METHODS.md
+
+Explain:
+
+* correlations;
+* formulas;
+* invariants;
+* perturbations;
+* epistemic classifications.
+
+BENCHMARKS.md
+
+Explain benchmark design and how to reproduce results.
+
+⸻
+
+47. Coding standards
+
+The implementation must:
+
+* use modules;
+* avoid unnecessary global dynamic state;
+* document exported predicates;
+* include mode comments where useful;
+* use meaningful variable names;
+* avoid singleton-variable warnings;
+* avoid silent exception swallowing;
+* validate external input;
+* keep pure reasoning separate from effects;
+* preserve deterministic declarations where possible;
+* use setup and cleanup around temporary resources;
+* remain readable to an experienced Prolog programmer.
+
+Prefer clear Prolog over excessively abstract metaprogramming.
+
+⸻
+
+48. Final design principle
+
+The system must be built around the following rule:
+
+Every conclusion, optimisation, schedule and research hypothesis must be represented in a form that can be inspected, tested and, where applicable, independently verified.
+
+The first release succeeds when it provides a reliable transparent foundation. It does not need to solve unrestricted artificial intelligence, mathematical discovery or program optimisation.
+
+The priority order is:
+
+correctness
+→ transparency
+→ determinism
+→ safety
+→ testability
+→ usefulness
+→ performance
+→ broader research capability
