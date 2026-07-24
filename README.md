@@ -68,7 +68,7 @@ swipl -q -g "use_module('mnn/src/mnn_scheduler.pl'), Tasks=[task(a,[],purity(pur
 ### Run full test suite
 
 ```sh
-swipl -q -s mnn/test/run_tests.pl -g run_tests,halt
+swipl -q -s mnn/test/run_tests.pl -g main,halt
 ```
 
 ### Run benchmarks
