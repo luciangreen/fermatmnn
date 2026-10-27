@@ -9,7 +9,8 @@ The implementation lives in `mnn/` and includes:
 - deterministic choice packets and dependency analysis;
 - bounded algorithm synthesis, research classification, verification, and scheduling;
 - number-theory domain examples (including Fermat-test caveats);
-- plunit regression suite and benchmark harness.
+- plunit regression suite and benchmark harness (modular exponentiation, GCD,
+  factor search, list doubling, and list reversal).
 
 ## Feature showcase (example commands)
 
@@ -77,4 +78,5 @@ swipl -q -s mnn/test/run_tests.pl -g main,halt
 swipl -q -g "use_module('mnn/mnn.pl'), run_benchmarks(Result), writeln(Result), halt"
 ```
 
-See `mnn/README.md` for additional usage details.
+See `mnn/README.md` for the feature guide, runnable examples, full and
+individual test commands, and current implementation status.
